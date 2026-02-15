@@ -196,3 +196,53 @@ La sécurité vient du fait qu’il est très difficile de retrouver ces deux no
 - Pourquoi utilise-t-on souvent RSA pour chiffrer une clé AES plutôt qu’un document entier ?
 
 Parce que c’est plus efficace : RSA sert à chiffrer une petite clé de session (AES) et AES chiffre rapidement de gros volumes de données ; c’est le principe du chiffrement hybride
+
+## D. Signature numérique
+
+### 1. Création et signature
+
+- Créer un fichier contrat.txt:
+
+`nano contrat.txt`
+
+- Générer son empreinte (hash):
+
+`openssl dgst -sha256 contrat.txt`
+
+![alt text](image-13.png)
+
+- Signer le fichier avec votre clé privée:
+
+`openssl dgst -sha256 -sign rsa_private.pem -out contrat.sig contrat.txt`
+
+![alt text](image-14.png)
+
+### 2. Vérification
+
+- Vérifier la signature avec la clé publique: 
+
+`openssl dgst -sha256 -verify rsa_public.pem -signature contrat.sig contrat.txt`
+
+![alt text](image-15.png)
+
+Puis modifier légèrement le fichier contrat.txt avec nano.
+
+- puis on refait la vérification(elle echoue).
+
+![alt text](image-16.png)
+
+
+### 3.Questions
+
+- Que se passe-t-il après modification du fichier ?Pourquoi ?
+
+L’empreinte du fichier change, donc la vérification de signature échoue, car la signature a été calculée sur l’ancienne empreinte ; la moindre modification du contenu change le hash.
+
+- Quel est le rôle du hachage dans le mécanisme de signature ?
+
+On ne signe pas directement le fichier mais son empreinte : cela réduit la quantité de données à traiter et garantit qu’une petite modification du fichier change fortement la valeur signée.
+
+- Quelle différence entre signature numérique et chiffrement ?
+
+Signature numérique : assure authenticité et intégrité (on signe avec la clé privée, on vérifie avec la clé publique, le contenu reste lisible).
+Chiffrement : assure confidentialité (on chiffre pour cacher le contenu, on déchiffre avec la clé appropriée), sans forcément prouver l’identité de l’expéditeur.
