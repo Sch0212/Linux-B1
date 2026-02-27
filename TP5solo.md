@@ -383,6 +383,10 @@ Clique sur Restore Configuration.
 
 et on remarque bien que la VM Pfsense ce reboot.
 
+![](image-84.png) 
+
+et nous somme bien revenu sur la version enregistrer. 
+
 #### .Questions
 
 - **Pourquoi la sauvegarde régulière est-elle essentielle en production ?**  
